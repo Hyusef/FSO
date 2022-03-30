@@ -1,0 +1,8 @@
+browser->server http POST https://studies.cs.helsinki.fi/exampleapp/new_note
+Server->browser Redirect https://studies.cs.helsinki.fi/exampleapp/notes
+browser->server http GET https://studies.cs.helsinki.fi/exampleapp/notes
+server->browser HTML code
+server->browser main.css
+server->browser main.js
+
+

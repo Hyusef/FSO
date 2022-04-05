@@ -4,12 +4,17 @@ import Persons from "./components/Persons";
 import Filter from "./components/Filter";
 import axios from "axios";
 import personService from "./services/persons";
+import SuccessAlert from "./components/SuccessAlert";
+import Erroralert from "./components/Erroralert";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [number, setNumber] = useState("");
   const [searchValue, setSearchValue] = useState("");
+  const [successMessage, setSuccessMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
+
   useEffect(() => {
     personService.getAll().then((resp) => {
       setPersons(resp.data);
@@ -44,10 +49,25 @@ const App = () => {
       personArr.push(persons[prop].name);
       if (persons[prop].name.toLowerCase() === newName.toLowerCase()) {
         if (window.confirm(`Do you want to update ${persons[prop].name}`)) {
-          axios.put(`http://localhost:3001/persons/${persons[prop].id}`, {
-            name: newName,
-            number: number,
-          });
+          axios
+            .put(`http://localhost:3001/persons/${persons[prop].id}`, {
+              name: newName,
+              number: number,
+            })
+            .then((resp) => {
+              console.log(resp);
+              setSuccessMessage(`Updated ${persons[prop].name}`);
+              setTimeout(() => {
+                setSuccessMessage(null);
+              }, 3000);
+            })
+            .catch((err) => {
+              setErrorMessage(`${persons[prop].name} has already been deleted`);
+              setTimeout(() => {
+                setErrorMessage(null);
+              }, 3000);
+              return;
+            });
         }
       }
     }
@@ -74,6 +94,8 @@ const App = () => {
 
   return (
     <div>
+      <SuccessAlert message={successMessage} />
+      <Erroralert message={errorMessage} />
       <h2>Phonebook</h2>
       <Filter searchValue={searchValue} searchChange={searchChange} />
       <Personform

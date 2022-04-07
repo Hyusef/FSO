@@ -1,10 +1,16 @@
 const express = require("express");
 const app = express();
-const morgan = require("morgan");
 const cors = require("cors");
+const morgan = require("morgan");
+require('dotenv').config()
+const mongoose = require("mongoose");
+const Person = require('./models/person')
 
+
+app.use(cors()) 
+
+app.use(express.static("build"));
 app.use(express.json());
-app.use(cors());
 morgan.token("body", (req, res) => JSON.stringify(req.body));
 app.use(
   morgan(":method :url :status :res[content-length] - :response-time ms :body")
@@ -33,8 +39,14 @@ let phonebook = [
   },
 ];
 
-app.get("/", (req, res) => {
-  res.send(phonebook);
+
+app.get("/api/persons", (req, res) => {
+  Person
+    .find({})
+    .then((notes) => {
+      res.json(notes);
+    })
+    .catch((err) => console.log(err));
 });
 
 app.get("/info", (req, res) => {
@@ -69,6 +81,19 @@ app.post("/api/persons/", (req, res) => {
     res.send("Error: There has to be both a number and a name");
     return;
   }
+
+  const person = new Person({
+    name:name,
+    number:number
+  })
+
+  person.save().then(result => {
+    console.log('note saved!')
+  })
+
+
+  /* 
+  Code before database integration
   const nameArr = [];
   phonebook.forEach((el) => {
     nameArr.push(el.name.toLowerCase());
@@ -86,9 +111,8 @@ app.post("/api/persons/", (req, res) => {
   };
 
   phonebook.push(personObj);
-  console.log(phonebook);
+  console.log(phonebook); */
   res.write("success");
-  1;
   res.end();
 });
 
@@ -99,9 +123,15 @@ app.delete("/api/persons/:id", (req, res) => {
   res.status(204).end();
 });
 
-const PORT = process.env.PORT || 3001
+app.put("/api/persons/:id", (req, res) => {
+  const id = Number(req.params.id);
+  const newPerson = req.body;
+  const oldIndex = phonebook.findIndex((el) => el.id === id);
+  phonebook[oldIndex] = newPerson;
+  res.status(200).end;
+});
+
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`server is running on ${PORT}`);
 });
-
-

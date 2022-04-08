@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 if (process.argv.length < 3) {
   console.log(
-    "Please provide the password as an argument: node mongo.js <password>"
+    'Please provide the password as an argument: node mongo.js <password>'
   );
   process.exit(1);
 }
@@ -13,7 +13,7 @@ mongoose.connect(url);
 const personName = process.argv[3];
 const personNumber = process.argv[4];
 
-const Person = mongoose.model("Person", personSchema);
+const Person = mongoose.model('Person', personSchema);
 
 const person = new Person({
   name: personName,

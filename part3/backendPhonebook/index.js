@@ -2,12 +2,11 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const morgan = require("morgan");
-require('dotenv').config()
+require("dotenv").config();
 const mongoose = require("mongoose");
-const Person = require('./models/person')
+const Person = require("./models/person");
 
-
-app.use(cors()) 
+app.use(cors());
 
 app.use(express.static("build"));
 app.use(express.json());
@@ -39,26 +38,34 @@ let phonebook = [
   },
 ];
 
-
-app.get("/api/persons", (req, res) => {
-  Person
-    .find({})
+app.get("/api/persons", (req, res, next) => {
+  Person.find({})
     .then((notes) => {
       res.json(notes);
     })
     .catch((err) => console.log(err));
 });
 
-app.get("/info", (req, res) => {
+app.get("/info", (req, res, next) => {
   res.write(`<p>Phoneboook has info for ${phonebook.length} people</p> \n`);
   const date = new Date();
   res.write(date.toString());
   res.end();
 });
 
-app.get("/api/persons/:id", (req, res) => {
-  const id = +req.params.id;
-  const person = phonebook.find((ele) => ele.id === id);
+app.get("/api/persons/:id", (req, res, next) => {
+  const id = req.params.id;
+  Person.findById(id)
+    .then((pers) => {
+      if (pers) {
+        res.json(pers);
+      } else {
+        res.status(404).end();
+      }
+    })
+    .catch((err) => next(err));
+
+  /* const person = phonebook.find((ele) => ele.id === id);
   console.log(phonebook);
   if (person) {
     res.json(person);
@@ -66,14 +73,10 @@ app.get("/api/persons/:id", (req, res) => {
     res.status(404);
     res.write("<h1>ERROR 404 COULD NOT BE FOUND</h1>");
     res.end();
-  }
+  } */
 });
 
-app.get("/api/persons/", (req, res) => {
-  res.json(phonebook);
-});
-
-app.post("/api/persons/", (req, res) => {
+app.post("/api/persons/", (req, res, next) => {
   const name = req.body.name;
   const number = req.body.number;
   const id = Math.round(Math.random() * 2000);
@@ -83,14 +86,19 @@ app.post("/api/persons/", (req, res) => {
   }
 
   const person = new Person({
-    name:name,
-    number:number
-  })
+    name: name,
+    number: number,
+  });
 
-  person.save().then(result => {
-    console.log('note saved!')
-  })
-
+  person
+    .save()
+    .then((result) => {
+      console.log("person saved!");
+      res.status(200).end();
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
 
   /* 
   Code before database integration
@@ -112,24 +120,46 @@ app.post("/api/persons/", (req, res) => {
 
   phonebook.push(personObj);
   console.log(phonebook); */
-  res.write("success");
-  res.end();
 });
 
-app.delete("/api/persons/:id", (req, res) => {
-  const id = Number(req.params.id);
+app.delete("/api/persons/:id", (req, res, next) => {
+  const id = req.params.id;
+  Person.findByIdAndRemove(id)
+    .then((result) => {
+      res.status(204).end();
+    })
+    .catch((err) => {
+      console.log(err);
+      next(err);
+    });
+
+  /* 
+Code before database integration
   phonebook = phonebook.filter((note) => note.id !== id);
   res.send("deleted");
-  res.status(204).end();
+  res.status(204).end(); */
 });
 
-app.put("/api/persons/:id", (req, res) => {
-  const id = Number(req.params.id);
+app.put("/api/persons/:id", (req, res, next) => {
+  const id = req.params.id;
   const newPerson = req.body;
-  const oldIndex = phonebook.findIndex((el) => el.id === id);
-  phonebook[oldIndex] = newPerson;
+
+  Person.findByIdAndUpdate(id, newPerson, { runValidators: true })
+    .then((updatedPerson) => {
+      res.json(updatedPerson);
+    })
+    .catch((err) => res.status(400).json(err));
+∆
+  /*   const oldIndex = phonebook.findIndex((el) => el.id === id);
+  phonebook[oldIndex] = newPerson; */
   res.status(200).end;
 });
+
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: "unknown endpoint" });
+};
+
+app.use(unknownEndpoint);
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {

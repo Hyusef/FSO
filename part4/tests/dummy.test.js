@@ -87,7 +87,6 @@ describe("total likes", () => {
 
   test("when list has only one blog, equals the likes of that", () => {
     const result = list_helper.totalLikes(listWithOneBlog);
-    console.log(result);
     expect(result).toBe(5);
   });
 });

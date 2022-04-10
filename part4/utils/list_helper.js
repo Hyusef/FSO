@@ -52,7 +52,6 @@ const mostBlogs = (blogs) => {
   max = Math.max(...authorsIndex);
   //gets the author with most posts
   const authorWithMostBlogsPosts = uniqueAuthors[authorsIndex.indexOf(max)];
-  console.log(authorWithMostBlogsPosts);
 
   const result = {
     author: authorWithMostBlogsPosts,
@@ -75,16 +74,16 @@ const mostLikes = (blogs) => {
     let likes = 0;
     blogs.forEach((ele) => {
       if (el === ele.author) {
-        console.log(ele.likes);
         likes += ele.likes;
       }
     });
-    {authorsIndex.push({ author: el, likes: likes })};
+    {
+      authorsIndex.push({ author: el, likes: likes });
+    }
   });
-   const filteredAuthors =  authorsIndex.filter(el=>el!==0)
+  const filteredAuthors = authorsIndex.filter((el) => el !== 0);
 
-   return filteredAuthors.reduce((a,b)=>a.likes>b.likes?a:b);
-
+  return filteredAuthors.reduce((a, b) => (a.likes > b.likes ? a : b));
 };
 
 module.exports = {

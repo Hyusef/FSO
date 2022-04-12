@@ -57,7 +57,15 @@ test("if post creates new blog", async () => {
     url: "ucd.ta.com",
     likes: 100,
   };
-  await api.post("/api/blogs").send(newBlog).expect(201);
+
+  await api
+    .post("/api/blogs")
+    .set(
+      "Authorization",
+      "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJuYW1lIiwiaWQiOiI2MjU0OGQxMmRhNmYyNTE1MzA2YTlhYzIiLCJpYXQiOjE2NDk3NjQzODMsImV4cCI6MTY0OTc2Nzk4M30.dlCmI3YdBoTaAx1H1GMrWPURvj2FbdysODTyoydmUT8"
+    )
+    .send(newBlog)
+    .expect(201);
   const response = await api.get("/api/blogs");
   expect(response.body).toHaveLength(initialBlogs.length + 1);
 }, 10000);
@@ -68,7 +76,7 @@ test("likes default to 0", async () => {
     author: "Allen T. Hurst",
     url: "ucd.tp.com",
   };
-  await api.post("/api/blogs").send(newBlog).expect(201);
+  await api.post("/api/blogs").send(newBlog).expect(200);
   const response = await api.get("/api/blogs");
   expect(response.body[2].likes).toBe(0);
 }, 10000);

@@ -39,14 +39,14 @@ const Blog = ({ blog, handleUpdate, user, token }) => {
   return (
     <div>
       <p>{blog.title}</p> <p>{blog.author}</p>
-      <button onClick={() => setClicked(!clicked)}>
+      <button id="viewButton" onClick={() => setClicked(!clicked)}>
         {clicked ? "Hide" : "View"}
       </button>
       {clicked && (
         <div>
           <p>{blog.url}</p>
-          <p>
-            Likes: {blog.likes} <button onClick={likeHandler}>Like</button>{" "}
+          <p id="likes">
+            Likes: {blog.likes} <button id="likeButton" onClick={likeHandler}>Like</button>{" "}
           </p>
           
         </div>

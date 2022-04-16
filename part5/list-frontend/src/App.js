@@ -6,7 +6,6 @@ import Noteform from "./components/Noteform";
 import LoginForm from "./components/Loginform";
 import Toggleable from "./components/Toggleable";
 
-
 const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [user, setUser] = useState(null);
@@ -72,7 +71,13 @@ const App = () => {
       {message && <h2>{message}</h2>}
       {user &&
         blogsArr.map((blog) => (
-          <Blog key={blog.id} blog={blog} handleUpdate={handleUpdate} user={user} token={user.token} />
+          <Blog
+            key={blog.id}
+            blog={blog}
+            handleUpdate={handleUpdate}
+            user={user}
+            token={user.token}
+          />
         ))}
       {user !== null && <button onClick={handleLogout}>Logout</button>}
       {user && <p> {user.username} currently logged in</p>}

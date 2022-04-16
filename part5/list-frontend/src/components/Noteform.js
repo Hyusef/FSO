@@ -1,5 +1,5 @@
 import React from "react";
-import { useState} from "react";
+import { useState } from "react";
 
 const NoteForm = ({ addBlog }) => {
   const [title, setTitle] = useState("");
@@ -7,7 +7,7 @@ const NoteForm = ({ addBlog }) => {
   const [url, setUrl] = useState("");
 
   const addBlogHandler = (e) => {
-      e.preventDefault()
+    e.preventDefault();
     const blogObject = {
       title: title,
       author: author,
@@ -25,6 +25,7 @@ const NoteForm = ({ addBlog }) => {
           value={title}
           name="title"
           onChange={(e) => setTitle(e.target.value)}
+          id="title"
         />{" "}
         <br />
         author:{" "}
@@ -33,6 +34,7 @@ const NoteForm = ({ addBlog }) => {
           value={author}
           name="title"
           onChange={(e) => setAuthor(e.target.value)}
+          id="author"
         />{" "}
         <br />
         url:{" "}
@@ -41,10 +43,13 @@ const NoteForm = ({ addBlog }) => {
           value={url}
           name="title"
           onChange={(e) => setUrl(e.target.value)}
+          id="url"
         />
       </div>
 
-      <button type="submit">create</button>
+      <button id="submitBlog" type="submit">
+        Create
+      </button>
     </form>
   );
 };

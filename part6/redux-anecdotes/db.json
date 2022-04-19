@@ -1,16 +1,6 @@
 {
   "anecdotes": [
     {
-      "content": "If it hurts, do it more often",
-      "id": "47145",
-      "votes": 0
-    },
-    {
-      "content": "Adding manpower to a late software project makes it later!",
-      "id": "21149",
-      "votes": 0
-    },
-    {
       "content": "The first 90 percent of the code accounts for the first 90 percent of the development time...The remaining 10 percent of the code accounts for the other 90 percent of the development time.",
       "id": "69581",
       "votes": 0
@@ -18,17 +8,82 @@
     {
       "content": "Any fool can write code that a computer can understand. Good programmers write code that humans can understand.",
       "id": "36975",
-      "votes": 0
+      "votes": 30
     },
     {
       "content": "Premature optimization is the root of all evil.",
       "id": "25170",
-      "votes": 0
+      "votes": 1
     },
     {
       "content": "Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.",
       "id": "98312",
+      "votes": 4
+    },
+    {
+      "content": "",
+      "id": "65686",
+      "votes": 2
+    },
+    {
+      "content": "",
+      "id": "12178",
+      "votes": 2
+    },
+    {
+      "content": "",
+      "id": "46447",
       "votes": 0
+    },
+    {
+      "content": "bebebe",
+      "id": "63713",
+      "votes": 0
+    },
+    {
+      "content": "mfoamofa",
+      "id": "95000",
+      "votes": 0
+    },
+    {
+      "content": "nehehehe",
+      "id": "69850",
+      "votes": 0
+    },
+    {
+      "content": "dad",
+      "id": "73722",
+      "votes": 0
+    },
+    {
+      "content": "fefwfewfwe",
+      "id": "79350",
+      "votes": 0
+    },
+    {
+      "content": "dasdwasd",
+      "id": "81751",
+      "votes": 0
+    },
+    {
+      "content": "nidanida",
+      "id": "15498",
+      "votes": 0
+    },
+    {
+      "content": "fittefitte",
+      "id": "28736",
+      "votes": 0
+    },
+    {
+      "content": "dsa",
+      "id": "43470",
+      "votes": 1
+    },
+    {
+      "content": "nidave",
+      "id": "65994",
+      "votes": 1
     }
   ]
 }

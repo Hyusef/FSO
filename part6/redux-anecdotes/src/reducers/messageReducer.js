@@ -11,11 +11,20 @@ const msgSlice = createSlice({
     },
 
     removeMsg(state, action) {
-        state = ''
-        return state;
-      },
+      state = "";
+      return state;
+    },
   },
 });
 
-export const { createMsg,removeMsg } = msgSlice.actions;
+export const { createMsg, removeMsg } = msgSlice.actions;
+export const setNotification = (data, secs) => {
+  return async (dispatch) => {
+    dispatch(createMsg(data));
+    setTimeout(() => {
+      dispatch(removeMsg);
+    }, secs * 1000);
+  };
+};
+
 export default msgSlice.reducer;

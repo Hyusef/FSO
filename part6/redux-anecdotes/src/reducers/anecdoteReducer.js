@@ -1,12 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-const anecdotesAtStart = [
-  "If it hurts, do it more often",
-  "Adding manpower to a late software project makes it later!",
-  "The first 90 percent of the code accounts for the first 90 percent of the development time...The remaining 10 percent of the code accounts for the other 90 percent of the development time.",
-  "Any fool can write code that a computer can understand. Good programmers write code that humans can understand.",
-  "Premature optimization is the root of all evil.",
-  "Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.",
-];
+import quotes from "../services/quotes";
+import axios from "axios";
 
 const getId = () => (100000 * Math.random()).toFixed(0);
 const asObject = (anecdote) => {
@@ -17,13 +11,14 @@ const asObject = (anecdote) => {
   };
 };
 
-const initialState = anecdotesAtStart.map(asObject);
+const initialState = [];
 
 const quoteSlice = createSlice({
   name: "quotes",
   initialState,
   reducers: {
     voteFn(state, action) {
+      console.log(state);
       const incByOne = state.find((n) => n.id === action.id);
       const changedQuote = {
         ...incByOne,
@@ -34,6 +29,13 @@ const quoteSlice = createSlice({
 
     createBlog(state, action) {
       return state.concat(asObject(action.data));
+    },
+
+    appendBlog(state, action) {
+      state.push(action.payload);
+    },
+    setBlog(state, action) {
+      return action.payload;
     },
   },
 });
@@ -71,5 +73,31 @@ export const voteFn = (id)=>{
   }
 } */
 
-export const { createBlog, voteFn } = quoteSlice.actions;
+export const { createBlog, voteFn, appendBlog, setBlog } = quoteSlice.actions;
+export const initializeApp = () => {
+  return async (dispatch) => {
+    const blogs = await quotes.getAll();
+    dispatch(setBlog(blogs));
+  };
+};
+
+export const createBlogAction = (content) => {
+  return async (dispatch) => {
+    const blogs = await quotes.createNew(content);
+    dispatch(appendBlog(blogs));
+  };
+};
+
+export const votePutAction = (id) => {
+  return async (dispatch) => {
+    const blogToInc = await axios.get(`http://localhost:3003/anecdotes/${id}`);
+
+    const blogobject = {
+      ...blogToInc.data,
+      votes: blogToInc.data.votes + 1,
+    };
+    quotes.putNew(id, blogobject);
+  };
+};
+
 export default quoteSlice.reducer;

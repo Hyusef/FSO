@@ -1,17 +1,21 @@
 import React from "react";
 import { useDispatch } from "react-redux";
+import quotes from "../services/quotes";
+import { createBlogAction } from "../reducers/anecdoteReducer";
+import { setNotification } from "../reducers/messageReducer";
 
 function Anecdoteform() {
   const dispatch = useDispatch();
   const createHandler = (e) => {
     e.preventDefault();
     const quote = e.target.quote.value;
-    e.target.quote.value = "";
-    dispatch({ type: "quotes/createBlog", data: quote });
-    dispatch({ type: "message/createMsg", data: quote });
+    dispatch(createBlogAction(quote));
+    /*     dispatch({ type: "message/createMsg", data: quote });
     setTimeout(() => {
       dispatch({ type: "message/removeMsg" });
-    }, 5000);
+    }, 5000); */
+    dispatch(setNotification(quote, 10));
+    e.target.quote.value = "";
   };
 
   return (

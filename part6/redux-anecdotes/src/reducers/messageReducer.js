@@ -6,7 +6,7 @@ const msgSlice = createSlice({
   initialState,
   reducers: {
     createMsg(state, action) {
-      state = action.data;
+      state = action.payload;
       return state;
     },
 
@@ -21,9 +21,16 @@ export const { createMsg, removeMsg } = msgSlice.actions;
 export const setNotification = (data, secs) => {
   return async (dispatch) => {
     dispatch(createMsg(data));
-    setTimeout(() => {
-      dispatch(removeMsg);
-    }, secs * 1000);
+    
+    let removeTimer;
+    function setTimer() {
+      clearTimeout(removeTimer);
+      removeTimer = setTimeout(() => {
+        dispatch(removeMsg());
+      }, secs * 1000);
+    }
+        setTimer();
+    console.log(removeTimer);
   };
 };
 

@@ -1,29 +1,26 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch, connect } from "react-redux";
+import { votePutAction } from "../reducers/anecdoteReducer";
+import { setNotification } from "../reducers/messageReducer";
+import { voteFn } from "../reducers/anecdoteReducer";
 
-//two things need to be done
-//NB: It should be as soon as the app begins
-//get the quotes from the server
-//and store the new created notes in the server
-//done
-
-function Anecdotelist() {
-  const anecdotes = useSelector((state) => state);
-  const dispatch = useDispatch();
-
+function Anecdotelist(props) {
+  const anecdotes = props;
   const vote = (id, content) => {
-    dispatch({ type: "quotes/voteFn", id: id });
-    dispatch({ type: "message/createMsg", data: content });
-    setTimeout(() => {
-      dispatch({ type: "message/removeMsg" });
-    }, 5000);
+    /*dispatch({ type: "quotes/voteFn", id: id });
+    dispatch(votePutAction(id));
+    dispatch(setNotification(content)); */
+    let secs = 2;
+    props.voteFn(id);
+    props.votePutAction(id);
+    props.setNotification(content, secs);
   };
 
   const filteredArr = anecdotes.anecdote.filter((el) =>
     el.content.includes(anecdotes.filter)
   );
 
-  console.log(filteredArr);
+  //console.log(filteredArr);
   const sortedArr = anecdotes.anecdote
     .slice()
     .sort((a, b) => b.votes > a.votes);
@@ -57,4 +54,17 @@ function Anecdotelist() {
   );
 }
 
-export default Anecdotelist;
+const mapStateToProps = (state) => state;
+
+const mapDispatchToProps = {
+  voteFn,
+  setNotification,
+  votePutAction,
+};
+
+const connectedList = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Anecdotelist);
+
+export default connectedList;

@@ -1,20 +1,22 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { connect } from "react-redux";
 import quotes from "../services/quotes";
 import { createBlogAction } from "../reducers/anecdoteReducer";
 import { setNotification } from "../reducers/messageReducer";
 
-function Anecdoteform() {
-  const dispatch = useDispatch();
+function Anecdoteform(props) {
   const createHandler = (e) => {
     e.preventDefault();
     const quote = e.target.quote.value;
+    props.createBlogAction(quote);
+    /* dispatch({ type: "message/createMsg", data: quote });
     dispatch(createBlogAction(quote));
-    /*     dispatch({ type: "message/createMsg", data: quote });
     setTimeout(() => {
       dispatch({ type: "message/removeMsg" });
+      dispatch(setNotification(quote, 10));
     }, 5000); */
-    dispatch(setNotification(quote, 10));
+
+    props.setNotification(quote, 10);
     e.target.quote.value = "";
   };
 
@@ -29,4 +31,11 @@ function Anecdoteform() {
   );
 }
 
-export default Anecdoteform;
+const mapDispatchToProps = {
+  setNotification,
+  createBlogAction,
+};
+
+const connectedForm = connect(null, mapDispatchToProps)(Anecdoteform);
+
+export default connectedForm;

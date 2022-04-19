@@ -18,13 +18,12 @@ const quoteSlice = createSlice({
   initialState,
   reducers: {
     voteFn(state, action) {
-      console.log(state);
-      const incByOne = state.find((n) => n.id === action.id);
+      const incByOne = state.find((n) => n.id === action.payload);
       const changedQuote = {
         ...incByOne,
         votes: incByOne.votes + 1,
       };
-      return state.map((b) => (b.id !== action.id ? b : changedQuote));
+      return state.map((b) => (b.id !== action.payload ? b : changedQuote));
     },
 
     createBlog(state, action) {

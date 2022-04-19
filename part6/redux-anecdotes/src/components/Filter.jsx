@@ -1,17 +1,14 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { connect, useDispatch } from "react-redux";
+import { filterAction } from "../reducers/filterReducer";
 
-const Filter = () => {
-  const anecdotes = useSelector((state) => state);
-  const dispatch = useDispatch();
-
+const Filter = (props) => {
   const handleChange = (event) => {
-        dispatch({type:"filter/filterAction",data:event.target.value})
+    props.filterAction(event.target.value);
   };
   const style = {
     marginBottom: 10,
   };
-
   return (
     <div style={style}>
       filter <input onChange={handleChange} />
@@ -19,4 +16,9 @@ const Filter = () => {
   );
 };
 
-export default Filter;
+const mapDispatchToProps = { filterAction };
+const mapStateToProps = (state) => state;
+
+const ConnectedFilter = connect(mapStateToProps, mapDispatchToProps)(Filter);
+
+export default ConnectedFilter;

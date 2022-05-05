@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import axios from "axios";
-const Blog = ({ blog, handleUpdate, user, token }) => {
+const Blog = ({ blog, handleUpdate, user, token, handleComment }) => {
   const [clicked, setClicked] = useState(false);
 
   const deleteHandler = (id) => {
@@ -16,6 +16,11 @@ const Blog = ({ blog, handleUpdate, user, token }) => {
       .catch((err) => {
         console.log(err);
       });
+  };
+  const submitHandler = (e) => {
+    e.preventDefault();
+    const comment = e.target.myComment.value;
+    handleComment(comment,blog.id)
   };
 
   const likeHandler = () => {
@@ -39,18 +44,25 @@ const Blog = ({ blog, handleUpdate, user, token }) => {
   return (
     <div>
       <p>{blog.title}</p> <p>{blog.author}</p>
-      <button id="viewButton" onClick={() => setClicked(!clicked)}>
-        {clicked ? "Hide" : "View"}
-      </button>
-      {clicked && (
-        <div>
-          <p>{blog.url}</p>
-          <p id="likes">
-            Likes: {blog.likes} <button id="likeButton" onClick={likeHandler}>Like</button>{" "}
-          </p>
-          
-        </div>
-      )}
+      <div>
+        <p>{blog.url}</p>
+        <p id="likes">
+          Likes: {blog.likes}{" "}
+          <button id="likeButton" onClick={likeHandler}>
+            Like
+          </button>
+        </p>
+        <h4>Comments</h4>
+        <form onSubmit={submitHandler}>
+          <input name="myComment" type="text" placeholder="Add comment"></input>
+          <button>Add comment</button>
+        </form>
+        <ul>
+          {blog.comments.map((ele) => {
+            return <li key={ele}>{ele}</li>;
+          })}
+        </ul>
+      </div>
       {user.username === blog.author && (
         <button onClick={() => deleteHandler(blog.id)}>Delete</button>
       )}

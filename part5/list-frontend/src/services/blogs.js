@@ -13,16 +13,33 @@ const getAll = () => {
 
 const create = async (blogObject) => {
   const config = {
-    headers: { Authorization: token ,'Cache-Control' : 'no-cache'},
+    headers: {
+      Authorization: token,
+      "Cache-Control": "no-cache",
+    },
   };
-   const response = await axios.post(baseUrl, blogObject, config);
-   return response.data;
+  const response = await axios.post(baseUrl, blogObject, config);
+  return response.data;
 };
 
-
-
-const createPut= async (blogObject,id)=>{
-  const response = await axios.put(blogObject,id);
+const makeComment = async (comment, id) => {
+  const config = {
+    headers: {
+      Authorization: token,
+      "Cache-Control": "no-cache",
+      "Content-Type": "application/json",
+    },
+  };
+  const response = await axios.post(
+    `${baseUrl}/${id}/comments`,
+    { comment: comment },
+    config
+  );
   return response.data;
-}
-export default { getAll, create, setToken,createPut};
+};
+
+const createPut = async (blogObject, id) => {
+  const response = await axios.put(blogObject, id);
+  return response.data;
+};
+export default { getAll, create, setToken, createPut, makeComment };

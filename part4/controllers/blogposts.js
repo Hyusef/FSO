@@ -14,6 +14,7 @@ blogsRouter.get("/", async (request, response) => {
     response.status(400);
   }
 });
+
 blogsRouter.put("/:id", (request, response) => {
   Blog.findByIdAndUpdate(request.params.id.toString(), request.body)
     .then((resp) => {
@@ -60,33 +61,36 @@ blogsRouter.post(
   }
 );
 
-blogsRouter.delete(
-  "/:id",
-  async (request, response, next) => {
-    const idOfPost = request.params.id;
+blogsRouter.delete("/:id", async (request, response, next) => {
+  const idOfPost = request.params.id;
 
-      Blog.findByIdAndRemove(idOfPost)
-        .then((resp) => {
-          response.status(201).json({ sucess: "deleted it" });
-          return resp.data;
-        })
-        .catch((err) => {
-          next(err);
-        });
-
-  }
-);
+  Blog.findByIdAndRemove(idOfPost)
+    .then((resp) => {
+      response.status(201).json({ sucess: "deleted it" });
+      return resp.data;
+    })
+    .catch((err) => {
+      next(err);
+    });
+});
 
 blogsRouter.post(
-  "api/blogs/:id/comments",
+  "/:id/comments",
+  tokenExtractor,
+  userExtractor,
   async (request, response, next) => {
- 
-
+    try {
+      const comment = request.body.comment;
+      const idOfBlog = request.params.id;
+      const myBlog = await Blog.findById(idOfBlog);
+      await myBlog.comments.push(comment);
+      console.log(myBlog.comments);
+      await myBlog.save();
+      response.json("got the request");
+    } catch (error) {
+      next(error);
+    }
   }
 );
-
-
-
-
 
 module.exports = blogsRouter;

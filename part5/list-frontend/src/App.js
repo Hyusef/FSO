@@ -8,6 +8,10 @@ import Toggleable from "./components/Toggleable";
 import { useDispatch, useSelector } from "react-redux";
 import UserblogInfo from "./components/UserblogInfo";
 import axios from "axios";
+import List from "@mui/material/List";
+import Divider from "@mui/material/Divider";
+import ListItem from "@mui/material/ListItem";
+
 import {
   BrowserRouter as Router,
   Link,
@@ -159,7 +163,17 @@ const App = () => {
           path="/blogs"
           element={
             user &&
-            blogsArr.map((blog) => <Bloglinks key={blog.id} blog={blog} />)
+            user !== null && (
+              <List>
+                {blogsArr.map((blog) => (
+                  <ListItem button>
+                    {" "}
+                    <Bloglinks key={blog.id} blog={blog} />
+                    <Divider />
+                  </ListItem>
+                ))}
+              </List>
+            )
           }
         />
         <Route

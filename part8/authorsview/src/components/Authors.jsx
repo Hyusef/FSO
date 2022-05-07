@@ -24,7 +24,14 @@ const Authors = (props) => {
     console.log(error.networkError.result.errors);
   }
 
-  const authors = props.myData.data.allAuthors;
+  let authors;
+  if (props.myData.data) {
+    authors = props.myData.data.allAuthors;
+  }
+
+  if (!authors) {
+    return null;
+  }
 
   const handleChange = (e) => {
     setSelected(e.target.value);
@@ -68,7 +75,6 @@ const Authors = (props) => {
     </div>
   );
 };
-
 
 
 export default Authors;

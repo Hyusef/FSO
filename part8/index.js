@@ -94,10 +94,6 @@ const typeDefs = gql`
     bookCount: Int
   }
 
-  type Author{
-    name: String!
-    born: Int!
-  }
 
   type Query {
     bookCount: Int!
@@ -114,7 +110,7 @@ const typeDefs = gql`
       genres: [String!]
     ): Books
 
-    editAuthor(name: String!, setBorn: Int!):Author
+    editAuthor(name: String!, setBorn: Int!): Authors
   }
 `;
 
@@ -137,12 +133,13 @@ const resolvers = {
 
   Authors: {
     bookCount: (root) => {
+      const booksArr = [];
       books.forEach((e) => {
         if (e.author === root.name) {
-          books.push(e.title);
+          booksArr.push(e.title);
         }
       });
-      return books.length;
+      return booksArr.length;
     },
   },
 
@@ -154,8 +151,6 @@ const resolvers = {
         name: args.author,
         born: null,
       });
-
-      console.log(books, book);
       return book;
     },
     editAuthor: (root, args) => {
@@ -165,8 +160,8 @@ const resolvers = {
         return e.name === nameOfAuthor
           ? { name: nameOfAuthor, born: setBornToDate }
           : e;
-        });
-        return { name: nameOfAuthor, born: setBornToDate } ;
+      });
+      return { name: nameOfAuthor, born: setBornToDate };
     },
   },
 };

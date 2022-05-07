@@ -9,14 +9,13 @@ const CREATE_BOOK = gql`
     $genres: [String!]
   ) {
     addBook(
-      title: $title,
-      published: $published,
-      author: $author,
+      title: $title
+      published: $published
+      author: $author
       genres: $genres
     ) {
       title
       published
-      author
       genres
     }
   }
@@ -29,23 +28,25 @@ const NewBook = (props) => {
   const [genre, setGenre] = useState("");
   const [genres, setGenres] = useState([]);
   const [addBook, { data, loading, error }] = useMutation(CREATE_BOOK, {
-    refetchQueries: [ { query: props.rBooks }, { query: props.rAuthors }] 
-  })
+    refetchQueries: [{ query: props.rBooks }, { query: props.rAuthors }], 
+  });
 
   if (!props.show) {
     return null;
   }
 
-  if (loading) return 'Submitting...';
-  if (error){ 
-    console.log(error.networkError.result.errors)
-  }
+  if (loading) return "Submitting...";
 
+  if (error && error.networkError) {
+    console.log(error.networkError.result.errors);
+  }
 
   const submit = async (event) => {
     event.preventDefault();
 
-    addBook({ variables: { title,published:parseInt(published), author, genres } });
+    addBook({
+      variables: { title, published: parseInt(published), author, genres },
+    });
     console.log("add book...");
     setTitle("");
     setPublished("");

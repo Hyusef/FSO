@@ -41,11 +41,11 @@ const App = () => {
         <button onClick={() => setPage("add")}>add book</button>
       </div>
 
-      <Authors show={page === "authors"} myData={myData} />
+      <Authors show={page === "authors"} myData={myData} rAuthors={ALL_AUTHORS} />
 
       <Books show={page === "books"} myDataBooks={myDataBooks}/>
 
-      <NewBook show={page === "add"} />
+      <NewBook show={page === "add" } rBooks={All_BOOKS} rAuthors={ALL_AUTHORS} />
     </div>
   );
 };

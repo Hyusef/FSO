@@ -27,6 +27,7 @@ const App = () => {
   const [page, setPage] = useState("authors");
   const myData = useQuery(ALL_AUTHORS);
   const myDataBooks = useQuery(All_BOOKS);
+  const [token, setToken] = useState(null)
 
   if (myData.loading) {
     return <div>loading...</div>;

@@ -74,12 +74,8 @@ const resolvers = {
       return Book.collection.countDocuments();
     },
     authorCount: async () => Author.collection.countDocuments(),
-    allBooks: (root, args) => {
-      return args.name || args.genres
-        ? books.filter(
-            (e) => e.author === args.name || e.genres.includes(args.genres)
-          )
-        : books;
+    allBooks: async (root, args) => {
+      return Book.find({}).populate('author');
     },
     allAuthors: async () => {
       return Author.find({});
@@ -90,10 +86,11 @@ const resolvers = {
   },
 
   Authors: {
-    bookCount: (root) => {
+    bookCount: async (root) => {
       const booksArr = [];
+      const books = await Book.find({});
       books.forEach((e) => {
-        if (e.author === root.name) {
+        if (e.author.toString() === root.id.toString()) {
           booksArr.push(e.title);
         }
       });
@@ -110,6 +107,7 @@ const resolvers = {
         await myAuthor.save();
         const book = new Book({ ...args, author: myAuthor });
         await book.save();
+        return book;
       } catch (error) {
         throw new UserInputError(error.message, {
           invalidArgs: args,

@@ -27,7 +27,9 @@ const Authors = (props) => {
   let authors;
   if (props.myData.data) {
     authors = props.myData.data.allAuthors;
+
   }
+
 
   if (!authors) {
     return null;

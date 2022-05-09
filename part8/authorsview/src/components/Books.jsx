@@ -2,8 +2,6 @@ import { useState, useEffect } from "react";
 
 const Books = (props) => {
   const [showBooks, setShowBooks] = useState([]);
-
-  /*     console.log() */
   let books;
   books = props.myDataBooks.data.allBooks;
   useEffect(() => {
@@ -32,14 +30,12 @@ const Books = (props) => {
           })
         )}
 
-      {myArr
-        .filter((v, i, a) => a.indexOf(v) == i)
-        .map((e, i) => (
-          <button key={e + i} onClick={() => genresHandler(e)}>
-            {e}
-          </button>
-        ))}
-      <button onClick={() => setShowBooks()}> All Genres</button>
+      {myArr.filter((v,i,a)=>a.indexOf(v)==i).map((e, i) => (
+        <button key={e + i} onClick={() => genresHandler(e)}>
+          {e}
+        </button>
+      ))}
+      <button onClick={()=>setShowBooks()} > All Genres</button>
 
       <table>
         <tbody>

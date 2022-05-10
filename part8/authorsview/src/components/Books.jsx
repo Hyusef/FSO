@@ -35,7 +35,7 @@ const Books = (props) => {
           {e}
         </button>
       ))}
-      <button onClick={()=>setShowBooks()} > All Genres</button>
+      <button onClick={()=>setShowBooks(books)} > All Genres</button>
 
       <table>
         <tbody>
@@ -49,7 +49,6 @@ const Books = (props) => {
               <td>{a.title}</td>
               <td>{a.author.name}</td>
               <td>{a.published}</td>
-              <td>{a.genres[0]}</td>
             </tr>
           ))}
         </tbody>

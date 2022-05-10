@@ -3,6 +3,7 @@ import Authors from "./components/Authors";
 import Books from "./components/Books";
 import NewBook from "./components/NewBook";
 import Loginform from "./components/Loginform";
+import Recommend from "./components/Recommend";
 import { gql, useQuery, useApolloClient } from "@apollo/client";
 
 const ALL_AUTHORS = gql`
@@ -53,6 +54,7 @@ const App = () => {
           <>
             <button onClick={() => setPage("books")}>books</button>
             <button onClick={() => setPage("add")}>add book</button>
+            <button onClick={() => setPage("recommend")}>recommend</button>
             <button onClick={logout}>logout</button>
           </>
         )}
@@ -67,6 +69,11 @@ const App = () => {
 
       <Books show={page === "books"} myDataBooks={myDataBooks} />
       <Loginform setToken={setToken} show={page === "login"} />
+      <Recommend
+        setToken={setToken}
+        show={page === "recommend"}
+        books={myDataBooks}
+      />
 
       <NewBook
         show={page === "add"}

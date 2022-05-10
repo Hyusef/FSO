@@ -75,12 +75,12 @@ const resolvers = {
     },
     authorCount: async () => Author.collection.countDocuments(),
     allBooks: async (root, args) => {
-      return Book.find({}).populate('author');
+      return Book.find({}).populate("author");
     },
     allAuthors: async () => {
       return Author.find({});
     },
-    me: (root, args, context) => {
+    me: (_, __, context) => {
       return context.currentUser;
     },
   },
@@ -123,7 +123,10 @@ const resolvers = {
       return Author.findOneAndUpdate(filter, update);
     },
     createUser: async (root, args) => {
-      const user = new User({ username: args.username });
+      const user = new User({
+        username: args.username,
+        favoriteGenre: args.favoriteGenre,
+      });
       return user.save().catch((error) => {
         throw new UserInputError(error.message, {
           invalidArgs: args,

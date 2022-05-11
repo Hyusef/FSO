@@ -4,7 +4,14 @@ import Books from "./components/Books";
 import NewBook from "./components/NewBook";
 import Loginform from "./components/Loginform";
 import Recommend from "./components/Recommend";
-import { gql, useQuery, useApolloClient } from "@apollo/client";
+import {
+  useQuery,
+  useMutation,
+  useSubscription,
+  useApolloClient,
+  gql
+} from "@apollo/client";
+
 
 const ALL_AUTHORS = gql`
   query {
@@ -12,6 +19,20 @@ const ALL_AUTHORS = gql`
       name
       born
       bookCount
+    }
+  }
+`;
+
+const FILTERED_BOOK = gql`
+  query FilteredBook($selectedBook: String!) {
+    filteredBook(selectedBook: $selectedBook) {
+      title
+      published
+      genres
+      author {
+        name
+        born
+      }
     }
   }
 `;
@@ -54,7 +75,7 @@ const App = () => {
           <>
             <button onClick={() => setPage("books")}>books</button>
             <button onClick={() => setPage("add")}>add book</button>
-            <button onClick={() => setPage("recommend")}>recommend</button>
+            <button onClick={() => setPage("recommend")}>recommendz</button>
             <button onClick={logout}>logout</button>
             {token && (
               <Recommend
@@ -74,13 +95,18 @@ const App = () => {
         rAuthors={ALL_AUTHORS}
       />
 
-      <Books show={page === "books"} myDataBooks={myDataBooks} />
+      <Books
+        show={page === "books"}
+        myDataBooks={myDataBooks}
+        filter={FILTERED_BOOK}
+      />
       <Loginform setToken={setToken} show={page === "login"} />
 
       <NewBook
         show={page === "add"}
         rBooks={All_BOOKS}
         rAuthors={ALL_AUTHORS}
+        filter={FILTERED_BOOK}
       />
     </div>
   );

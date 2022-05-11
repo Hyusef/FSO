@@ -1,43 +1,30 @@
 import { useState, useEffect } from "react";
 import { gql, useQuery } from "@apollo/client";
 
-const FILTERED_BOOK = gql`
-  query FilteredBook($selectedBook: String!) {
-    filteredBook(selectedBook: $selectedBook) {
-      title
-      published
-      genres
-      author {
-        name
-        born
-      }
-    }
-  }
-`;
-
 const Books = (props) => {
-  const [showBooks, setShowBooks] = useState([]);
   const [theOneBook, setTheOneBook] = useState([]);
   const [genre, setGenre] = useState(null);
+  const data = useQuery(props.filter, {
+    variables: { selectedBook: genre },
+  });
 
   let books;
   if (props.myDataBooks.data) books = props.myDataBooks.data.allBooks;
+
   useEffect(() => {
-    setShowBooks(books);
-    if (!data.loading && data && data.data) {
+    if (data && !data.loading && data && data.data) {
       setTheOneBook(data.data.filteredBook);
     }
   }, [genre]);
 
   const genresHandler = (genre) => {
+    if (data && !data.loading && data && data.data) {
+      setTheOneBook(data.data.filteredBook);
+    }
     setGenre(genre);
   };
 
-  const data = useQuery(FILTERED_BOOK, {
-    variables: { selectedBook: genre },
-  });
-
-  if (data.loading) {
+  if (data && data.loading) {
     return "Loading..";
   }
 
@@ -62,7 +49,14 @@ const Books = (props) => {
             {e}
           </button>
         ))}
-      <button onClick={() => setGenre("All")}> All Genres</button>
+      <button
+        onClick={() => {
+          setGenre("All");
+        }}
+      >
+        {" "}
+        All Genres
+      </button>
 
       <table>
         <tbody>

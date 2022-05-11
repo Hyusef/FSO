@@ -25,8 +25,6 @@ function Recommend(props) {
     setShowBooks(allBooks);
   }, []);
 
-  console.log(genre);
-
   if (!props.show) {
     return null;
   }

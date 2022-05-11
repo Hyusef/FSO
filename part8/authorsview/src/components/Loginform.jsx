@@ -5,11 +5,10 @@ import { gql, useQuery } from "@apollo/client";
 export const LOGIN = gql`
   mutation login($username: String!, $password: String!) {
     login(username: $username, password: $password) {
-      value authorsview/src/components/Loginform.jsx
+      value
     }
   }
 `;
-
 const Loginform = ({ setError, setToken, show }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -18,7 +17,7 @@ const Loginform = ({ setError, setToken, show }) => {
       setError(error.graphQLErrors[0].message);
     },
   });
-
+  
   useEffect(() => {
     if (result.data) {
       const token = result.data.login.value;

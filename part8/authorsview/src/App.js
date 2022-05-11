@@ -56,6 +56,13 @@ const App = () => {
             <button onClick={() => setPage("add")}>add book</button>
             <button onClick={() => setPage("recommend")}>recommend</button>
             <button onClick={logout}>logout</button>
+            {token && (
+              <Recommend
+                setToken={setToken}
+                show={page === "recommend"}
+                books={myDataBooks}
+              />
+            )}
           </>
         )}
         {!mystuf && <button onClick={() => setPage("login")}>Login</button>}
@@ -69,11 +76,6 @@ const App = () => {
 
       <Books show={page === "books"} myDataBooks={myDataBooks} />
       <Loginform setToken={setToken} show={page === "login"} />
-      <Recommend
-        setToken={setToken}
-        show={page === "recommend"}
-        books={myDataBooks}
-      />
 
       <NewBook
         show={page === "add"}

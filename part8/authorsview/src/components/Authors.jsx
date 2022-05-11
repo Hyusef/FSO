@@ -27,9 +27,7 @@ const Authors = (props) => {
   let authors;
   if (props.myData.data) {
     authors = props.myData.data.allAuthors;
-
   }
-
 
   if (!authors) {
     return null;
@@ -68,7 +66,9 @@ const Authors = (props) => {
       <form onSubmit={handleUpdate}>
         <select value={selected} onChange={handleChange}>
           {authors.map((a) => (
-            <option value={a.name}>{a.name}</option>
+            <option key={a.name} value={a.name}>
+              {a.name}
+            </option>
           ))}
         </select>
         <input type="number" placeholder="Born" name="born"></input>
@@ -77,6 +77,5 @@ const Authors = (props) => {
     </div>
   );
 };
-
 
 export default Authors;

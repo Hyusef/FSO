@@ -15,7 +15,6 @@ const authLink = setContext((_, { headers }) => {
     headers: { ...headers, authorization: token ? `bearer ${token}` : null },
   };
 });
-
 const httpLink = new HttpLink({ uri: "http://localhost:4000" });
 
 const client = new ApolloClient({

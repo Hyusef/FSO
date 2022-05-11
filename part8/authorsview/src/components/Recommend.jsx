@@ -1,6 +1,6 @@
 import React from "react";
-import { gql, useQuery, useApolloClient } from "@apollo/client";
-import { useState } from "react";
+import { gql, useQuery } from "@apollo/client";
+import { useState, useEffect } from "react";
 
 const GET_lOGGED_IN_USER = gql`
   query Me {
@@ -12,21 +12,30 @@ const GET_lOGGED_IN_USER = gql`
 `;
 function Recommend(props) {
   const [showBooks, setShowBooks] = useState([]);
+  const [genre, setGenre] = useState(null);
   const LoggedinUser = useQuery(GET_lOGGED_IN_USER);
-  const myGenre = LoggedinUser.data.me.favoriteGenre;
 
-  const allBooks = props.books.data.allBooks.filter((e) => {
-    return e.genres.includes(myGenre);
-  });
+  useEffect(() => {
+    if (LoggedinUser && LoggedinUser.data && LoggedinUser.data.me) {
+      setGenre(LoggedinUser.data.me.favoriteGenre);
+    }
+    const allBooks = props.books.data.allBooks.filter((e) => {
+      return e.genres.includes(genre);
+    });
+    setShowBooks(allBooks);
+  }, []);
+
+  console.log(genre);
 
   if (!props.show) {
     return null;
   }
+
   return (
     <div>
       <h1>Recommendations</h1>
       <p>
-        Books in your favourite genre: <strong> {`${myGenre}`}</strong>
+        Books in your favourite genre: <strong> {`${genre}`}</strong>
       </p>
 
       <table>
@@ -36,7 +45,7 @@ function Recommend(props) {
             <th>author</th>
             <th>published</th>
           </tr>
-          {allBooks.map((a) => (
+          {showBooks.map((a) => (
             <tr key={a.title}>
               <td>{a.title}</td>
               <td>{a.author.name}</td>

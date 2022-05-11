@@ -52,6 +52,7 @@ const typeDefs = gql`
     allBooks(name: String, genres: String): [Books!]!
     allAuthors: [Authors!]!
     me: User
+    filteredBook(selectedBook: String!): [Books!]!
   }
 
   type Mutation {
@@ -82,6 +83,17 @@ const resolvers = {
     },
     me: (_, __, context) => {
       return context.currentUser;
+    },
+    filteredBook: async (root, args, context) => {
+      if (!context.currentUser)
+        throw new UserInputError("Login before this operation");
+
+      const selectedBook = args.selectedBook;
+      const books = await Book.find({}).populate("author");
+      const booksWithGenre = books.filter((b) =>
+        b.genres.includes(selectedBook)
+      );
+      return booksWithGenre;
     },
   },
 

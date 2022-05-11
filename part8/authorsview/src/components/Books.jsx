@@ -25,7 +25,6 @@ const Books = (props) => {
   useEffect(() => {
     setShowBooks(books);
     if (!data.loading && data && data.data) {
-      console.log(data.data.filteredBook);
       setTheOneBook(data.data.filteredBook);
     }
   }, [genre]);
@@ -63,7 +62,7 @@ const Books = (props) => {
             {e}
           </button>
         ))}
-      <button onClick={() => setShowBooks(books)}> All Genres</button>
+      <button onClick={() => setGenre("All")}> All Genres</button>
 
       <table>
         <tbody>

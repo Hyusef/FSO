@@ -90,6 +90,9 @@ const resolvers = {
 
       const selectedBook = args.selectedBook;
       const books = await Book.find({}).populate("author");
+        if (selectedBook === "All") {
+          return books;
+        }
       const booksWithGenre = books.filter((b) =>
         b.genres.includes(selectedBook)
       );

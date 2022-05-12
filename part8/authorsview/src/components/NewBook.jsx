@@ -28,7 +28,11 @@ const NewBook = (props) => {
   const [genre, setGenre] = useState("");
   const [genres, setGenres] = useState([]);
   const [addBook, { data, loading, error }] = useMutation(CREATE_BOOK, {
-    refetchQueries: [{ query: props.rBooks }, { query: props.rAuthors }], 
+    refetchQueries: [
+      { query: props.rBooks },
+      { query: props.rAuthors },
+      { query: props.filter },
+    ],
   });
 
   if (!props.show) {

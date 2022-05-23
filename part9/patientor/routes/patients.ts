@@ -8,7 +8,7 @@ router.get("/", (_req, res) => {
 });
 
 router.get("/:id", (req, res) => {
-  const patient = patientService.findById((req.params.id));
+  const patient = patientService.findById(req.params.id);
 
   if (patient) {
     res.send(patient);
@@ -17,20 +17,10 @@ router.get("/:id", (req, res) => {
   }
 });
 
-router.post('/', (req, res) => {
-  const { date, weather, visibility, comment } = req.body;
-  const newDiaryEntry = patientService.addPatient(
-    date,
-    weather,
-    visibility,
-    comment,
-  );
-  res.json(newDiaryEntry);
+router.post("/", (req, res) => {
+  const { name, dateOfBirth, ssn, gender, occupation } = req.body;
+  patientService.addPatient(name,dateOfBirth,ssn,gender,occupation);
+  res.status(200).send("correct");
 });
-
-
-
-
-
 
 export default router;
